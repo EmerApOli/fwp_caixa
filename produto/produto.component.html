@@ -1,0 +1,96 @@
+<div class="container">
+
+    <!-- Pesquisa -->
+    <div class="grid">
+        <form autocomplete="off" (ngSubmit)="pesquisar()">
+            <div class="col-12">
+                <h1>Produtos</h1>
+            </div>
+
+            <div class="col-12 p-fluid">
+                <label>Nome</label>
+                <input pInputText type="text" name="nome" [(ngModel)]="filtro.nome">
+            </div>
+
+            <div class="col-12">
+                <button pButton type="submit" label="Pesquisar"></button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lista de pessoas -->
+    <div class="grid">
+        <div class="col-12">
+            <p-table [value]="produtos" [responsive]="true" [paginator]="true" [rows]="filtro.itensPorPagina"
+                [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th>Descricao</th>
+                        <th>Preço</th>
+                        <th>Ativo</th>
+                        <th class="col-acoes-header"></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-produto>
+                    <tr>
+
+                        <td>
+                            <span class="p-column-title">ID</span>
+                            {{ produto.id }}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Nome</span>
+                            {{ produto.nome }}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Descricao</span>
+                            {{ produto.descricao }}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Preco</span>
+                            {{ produto.preco }}
+                        </td>
+
+                        <td>
+                            <span class="p-column-title">Ativo</span>
+                            <a href="javascript:;" [pTooltip]="produto.ativo ? 'Desativar' : 'Ativar'"
+                                tooltipPosition="top" (click)="alternarStatus(produto)">
+                                {{ produto.ativo ? 'Ativo' : 'Inativo' }}
+                            </a>
+                        </td>
+                        <td class="col-acoes">
+                            <span class="p-column-title"></span>
+                            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
+                                [routerLink]="['/pessoas', produto.codigo]"></a>
+                            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"
+                                (click)="confirmarExclusao(produto)"></button>
+
+                        </td>
+                        <td>
+
+                            <button pButton icon=" bi-cart-plus" pTooltip="adicionar" tooltipPosition="top"
+                                (click)="addToCart(produto)"></button>
+                        </td>
+
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="5">
+                            Nenhuma pessoa encontrada
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="col-12">
+            <a pButton label="Nova Pessoa" routerLink="/pessoas/nova"></a>
+        </div>
+    </div>
+
+</div>
